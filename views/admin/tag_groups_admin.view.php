@@ -15,7 +15,12 @@
     <thead>
       <tr>
         <th style="min-width:30px;"><?php _e( 'Group ID', 'tag-groups' ) ?></th>
-        <th><?php _e( 'Label displayed on the frontend', 'tag-groups' ) ?></th>
+        <th class="sortable desc">
+          <a href="#" class="tag-groups-admin-title-sort">
+            <span><?php _e( 'Label displayed on the frontend', 'tag-groups' ) ?></span>
+            <span class="sorting-indicator"></span>
+          </a>
+        </th>
         <th class="tg_group_admin_parent" style="display:none;"></th>
         <th><?php _e( 'Number of assigned tags', 'tag-groups' ) ?></th>
         <?php if ( $tag_group_show_filter ) : ?>
@@ -28,7 +33,12 @@
     <tfoot>
       <tr>
         <th><?php _e( 'Group ID', 'tag-groups' ) ?></th>
-        <th><?php _e( 'Label displayed on the frontend', 'tag-groups' ) ?></th>
+        <th class="sortable desc">
+          <a href="#" class="tag-groups-admin-title-sort">
+            <span><?php _e( 'Label displayed on the frontend', 'tag-groups' ) ?></span>
+            <span class="sorting-indicator"></span>
+          </a>
+        </th>
         <th class="tg_group_admin_parent" style="display:none;"></th>
         <th><?php _e( 'Number of assigned tags', 'tag-groups' ) ?></th>
         <?php if ( $tag_group_show_filter ) : ?>
@@ -222,6 +232,20 @@
       tagGroupsData.tag_groups_task = "refresh";
       tg_do_ajax(tagGroupsAjaxParameters, tagGroupsData, tagGroupsLabels);
     });
+    jQuery('#tag_group_administration').on('click', '.tag-groups-admin-title-sort', function (e) {
+      e.preventDefault();
+      var parent = jQuery(this).closest('th');
+      if (parent.hasClass('desc')) {
+        tagGroupsData.tag_groups_task = "sortup";
+        jQuery('.tag-groups-admin-title-sort').closest('th').removeClass('desc');
+        jQuery('.tag-groups-admin-title-sort').closest('th').addClass('asc');
+      } else {
+        tagGroupsData.tag_groups_task = "sortdown";
+        jQuery('.tag-groups-admin-title-sort').closest('th').removeClass('asc');
+        jQuery('.tag-groups-admin-title-sort').closest('th').addClass('desc');
+      }
+      tg_do_ajax(tagGroupsAjaxParameters, tagGroupsData, tagGroupsLabels);
+    });
     jQuery('#tag_group_administration').on('click', '#tg_groups_sort_up', function () {
       tagGroupsData.tag_groups_task = "sortup";
       tg_do_ajax(tagGroupsAjaxParameters, tagGroupsData, tagGroupsLabels);
@@ -240,7 +264,7 @@
   });
 </script>
 
-<div id="tg_tools_accordion">
+<div id="tg_tools_accordion" style="display: none;">
 <h3 class="tg_pointer"><span title="<?php _e( 'Click to open', 'tag-groups' )?>"><?php _e( 'Tools', 'tag-groups' )?> <span class="dashicons dashicons-menu"></span></span></h3>
   <div class="tg_tools_accordion_container">
     <div class="tg_tools_accordion_content">
